@@ -36,13 +36,11 @@ This system relies entirely on offline, pre-downloaded map data. Before field op
 
 ### 1. Raster Database (MBTiles)
 You must provide an MBTiles file (an SQLite database) containing satellite imagery structured in standard web-mercator tile coordinates (Slippy Map).
-- Place the file in the working directory (e.g., `satellite.mbtiles`).
-- Modify the `mbtiles_path` parameter inside `vbn_system.py` if your file name differs.
+- You can specify the file path when running the system using the `--mbtiles` argument.
 
 ### 2. Vector Database (GeoJSON)
 Optionally, provide a GeoJSON file with semantic vector shapes (roads, buildings, rivers) to aid the structural fallback matcher.
-- Place the file in the working directory (e.g., `map.geojson`).
-- Modify the `geojson_path` parameter inside `vbn_system.py` if your file name differs.
+- You can specify the file path when running the system using the `--geojson` argument.
 
 ## Configuration
 Edit the constant configurations at the top of `vbn_system.py` to match your specific hardware parameters:
@@ -56,10 +54,10 @@ Edit the constant configurations at the top of `vbn_system.py` to match your spe
 
 ## Running the System
 
-Start the autonomous VBN script directly with Python:
+Start the autonomous VBN script directly with Python, passing the paths to your local databases:
 
 ```bash
-python3 vbn_system.py
+python3 vbn_system.py --mbtiles my_satellite_map.mbtiles --geojson my_semantic_map.geojson
 ```
 
 Upon execution, the terminal will display startup messages and any critical UART connection warnings. The multi-threaded system will then run endlessly in the background.
