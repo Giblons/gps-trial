@@ -62,8 +62,32 @@ python3 vbn_system.py --mbtiles my_satellite_map.mbtiles --geojson my_semantic_m
 
 Upon execution, the terminal will display startup messages and any critical UART connection warnings. The multi-threaded system will then run endlessly in the background.
 
-## Testing
-To verify the math transforms and NMEA string formatting without active camera hardware or databases, run the unit test suite:
+## Generating/Acquiring Offline Maps
+If you do not have pre-existing maps for your flight area, you can acquire them using the following tools:
+
+- **MBTiles (Raster)**: Use [Mobile Atlas Creator (MOBAC)](http://mobac.sourceforge.net/) or [QGIS](https://qgis.org/) to select your flight region, choose a satellite map source, and export it as an "MBTiles SQLite" file.
+- **GeoJSON (Vector)**: Navigate to [Overpass Turbo](https://overpass-turbo.eu/), focus the map on your flight area, and run a query for features like `highway=*` or `building=*`. Export the results directly as GeoJSON.
+
+## Testing & Flight Simulation
+
+### 1. Generating Sample Databases
+To immediately test the system without downloading massive mapping files, we provide a script to generate mock databases. Run this first:
+
+```bash
+python3 download_sample_data.py
+```
+This will create `sample_satellite.mbtiles` and `sample_map.geojson` in your directory.
+
+### 2. Simulating a Flight with MP4 Footage
+If you have recorded a previous flight and want to test the multi-modal matching algorithm offline using that video instead of a live MIPI camera, use the `simulate_flight.py` script:
+
+```bash
+python3 simulate_flight.py --video my_flight_recording.mp4 --mbtiles sample_satellite.mbtiles --geojson sample_map.geojson
+```
+*Note: Ensure the `--mbtiles` and `--geojson` paths match the geographical area of your video recording for accurate NMEA WGS84 outputs.*
+
+### 3. Unit Tests
+To verify the complex math transforms and NMEA string formatting without active camera hardware or databases, run the unit test suite:
 
 ```bash
 PYTHONPATH=. python3 test_vbn_system.py
