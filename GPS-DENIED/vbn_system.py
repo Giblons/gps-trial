@@ -143,14 +143,14 @@ class NMEAEmitterThread(threading.Thread):
                 num_sats = "08" # Spoof 8 satellites for fix
                 hdop = "1.0"
                 gga_core = f"GPGGA,{time_str},{lat_str},{lat_dir},{lon_str},{lon_dir},1,{num_sats},{hdop},{alt:.1f},M,0.0,M,,"
-                gga_msg = f"${gga_core}*{self.calculate_checksum(gga_core)}\\r\\n"
+                gga_msg = f"${gga_core}*{self.calculate_checksum(gga_core)}\r\n"
 
                 # $GPRMC
                 # Format: $GPRMC,hhmmss.ss,A,llll.ll,a,yyyyy.yy,a,x.x,x.x,ddmmyy,x.x,a*hh
                 speed_knots = "0.0"
                 course = "0.0"
                 rmc_core = f"GPRMC,{time_str},A,{lat_str},{lat_dir},{lon_str},{lon_dir},{speed_knots},{course},{date_str},,,"
-                rmc_msg = f"${rmc_core}*{self.calculate_checksum(rmc_core)}\\r\\n"
+                rmc_msg = f"${rmc_core}*{self.calculate_checksum(rmc_core)}\r\n"
 
                 try:
                     self.serial_conn.write(gga_msg.encode('ascii'))
@@ -444,7 +444,7 @@ if __name__ == "__main__":
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("\\n[VBN] Shutting down...")
+        print("\n[VBN] Shutting down...")
         capture_thread.stop()
         core_thread.stop()
         nmea_thread.stop()
